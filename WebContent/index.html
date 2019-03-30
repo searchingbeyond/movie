@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>电影搜索平台</title>
+		<link rel="shortcut icon" href="favicon.ico">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<script src="./resource/javascript/jquery.js"></script>
+		<link rel="stylesheet" href="./resource/semantic-ui/dist/semantic.min.css">
+		<script src="./resource/semantic-ui/dist/semantic.min.js"></script>
+		<link rel="stylesheet" href="./resource/css/common.css">
+	</head>
+
+	<body>
+		<div id="container" class="ui container">
+		
+			<div id="header">
+				<h1 class="ui centered blue header">电影搜索平台</h1>
+			</div>
+
+			<div id="search" class="ui text container">
+				<div class="ui fluid left icon action big input">
+			  		<input type="text" placeholder="变形金刚" autofocus autocomplete="off">
+			  		<i class="search icon"></i>
+				  	<button class="ui blue big button">搜索</button>
+				</div>
+			</div>
+			
+
+			<div id="main">
+				<div class="ui text container">
+					<div class="ui grid" id="site_box"></div>
+				</div>
+			</div>
+
+			<div id="footer"></div>
+
+		</div>
+	</body>
+	<script>
+		/**
+		 * 当首页加载完成之后，请求后端显示所有的网站列表
+		 */
+		$(document).ready(function(){
+		    $.getJSON("website", {"action":"index"}, function(result){
+		    	let content = "";
+		        $.each(result, function(i, field){
+		        	content += `
+						<div class="five wide column">
+							<a href="${field['url']}" target="_blank">
+								<div><img class="ui mini centered image" src="./resource/images/${field['icon']}"></div>
+								<div>${field['sitename']}</div>
+							</a>
+						</div>
+						`;
+		        });
+		        
+		        $("#site_box").html(content);
+		    });
+		});
+	</script>
+</html>
+<div class="ui modal" id="notice">
+  	<div class="header" id="notice_title"></div>
+  	<div class="content" id="notice_content"></div>
+  	<div class="actions">
+    	<div class="ui positive button">确定</div>
+    	<div class="ui cancel button">返回</div>
+  	</div>
+</div>
+
+<div id="login_entry">
+	<a href="admin/index.html"><i class="user big blue icon"></i></a>
+</div>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>后台管理-添加网站</title>
+		<link rel="shortcut icon" href="../favicon.ico">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<script src="../resource/javascript/jquery.js"></script>
+		<link rel="stylesheet" href="../resource/semantic-ui/dist/semantic.min.css">
+		<script src="../resource/semantic-ui/dist/semantic.min.js"></script>
+		<link rel="stylesheet" href="../resource/css/common.css">
+		<script src="../resource/javascript/utils.js"></script>
+	</head>
+
+	<body>
+		<div id="container" class="ui container">
+
+			<div id="main">
+				<div class="ui text container">
+					<div class="ui massive fluid four item menu">
+					    <a class="item"  href="index.html"><i class="list icon"></i>网站列表</a>
+					    <a class="active item" href="add.html"><i class="plus circle icon"></i>添加网站</a>
+					    <a class="item" href="login.html"><i class="user icon"></i>登录</a>
+					    <a class="item" href="../index.html"><i class="home icon"></i>前往首页</a>
+					</div>
+				</div>
+			</div>
+
+			<div id="site_list">
+				<div class="ui text container">
+					<form class="ui form">
+						<h3 class="ui divided center aligned header">填写新增的网站信息</h3>
+						
+						<div class="field">
+						    <label>网站名称</label>
+						    <div class="ui input"><input type="text" name="sitename" id="sitename" autocomplete="off"></div>
+						</div>
+						<br>
+						<div class="field">
+						    <label>网站地址</label>
+						    <div class="ui input">
+						    	<input type="text" placeholder="示例：http://www.bilibili.com" name="url" id="url" autocomplete="off">
+						    </div>
+						</div>
+						<!-- 
+						<br>
+						<div class="field">
+						    <label>测试网站可用性</label>
+						    <div class="ui labeled input">
+							    <button class="fluid ui orange button"><i class="bug icon"></i>请点击按钮</button>
+						    </div>
+						</div>
+						 -->
+						<br>
+						<div class="field">
+						    <div class="ui labeled input">
+							    <button class="fluid ui positive button" id="submit">提交</button>
+						    </div>
+						</div>
+						
+					  </div>
+					</form>
+				</div>
+			</div>
+
+			<div id="footer"></div>
+
+		</div>
+	</body>
+	<script>
+		$(document).ready(function(){
+			$("#submit").click(function() {
+				let sitename = $("#sitename").val();
+				let url = $("#url").val();
+				
+				let data = {
+					"action" : "add",
+					"sitename" : sitename,
+					"url" : url
+				};
+				$.post("../website", data, function(result){
+					if (result['code'] != "1") {
+						alert_msg("操作失败", "添加网站失败， 失败原因 ：" + result['msg']);
+					} else {
+						alert_msg("操作成功", "返回网站首页或者后台首页即可查看信息");
+						$("#sitename").val("");
+						$("#url").val("");
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+</html>
+
+<div class="ui modal" id="notice">
+  	<div class="header" id="notice_title"></div>
+  	<div class="content" id="notice_content"></div>
+  	<div class="actions">
+    	<div class="ui positive button">确定</div>
+    	<div class="ui cancel button">返回</div>
+  	</div>
+</div>

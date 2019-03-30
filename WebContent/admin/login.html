@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>后台管理-添加网站</title>
+		<link rel="shortcut icon" href="../favicon.ico">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<script src="../resource/javascript/jquery.js"></script>
+		<link rel="stylesheet" href="../resource/semantic-ui/dist/semantic.min.css">
+		<script src="../resource/semantic-ui/dist/semantic.min.js"></script>
+		<link rel="stylesheet" href="../resource/css/common.css">
+		<script src="../resource/javascript/utils.js"></script>
+	</head>
+
+	<body>
+		<div id="container" class="ui container">
+
+			<div id="main">
+				<div class="ui text container">
+					<div class="ui massive fluid four item menu">
+					    <a class="item"  href="index.html"><i class="list icon"></i>网站列表</a>
+					    <a class="item" href="add.html"><i class="plus circle icon"></i>添加网站</a>
+					    <a class="active item" href="login.html"><i class="user icon"></i>登录</a>
+					    <a class="item" href="../index.html"><i class="home icon"></i>前往首页</a>
+					</div>
+				</div>
+			</div>
+
+			<div id="site_list">
+				<div class="ui text container">
+					<form class="ui form" id="login_form">
+						<div class="field">
+						    <label>用户名</label>
+						    <div class="ui input"><input type="text" name="username" id="username" autofocus></div>
+						</div>
+						<br>
+						<div class="field">
+						    <label>密&nbsp;&nbsp;码</label>
+						    <div class="ui input">
+						    	<input type="password" name="password" id="password">
+						    </div>
+						</div>
+						<br>
+						<div class="field">
+						    <div class="ui labeled input">
+							    <button class="fluid ui positive button" id="submit">登录</button>
+						    </div>
+						</div>
+					  </div>
+					</form>
+				</div>
+			</div>
+
+			<div id="footer"></div>
+
+		</div>
+	</body>
+	<script>
+		$(document).ready(function(){
+			// 页面加载完毕时，首先检测是否登录
+			$.getJSON("../checkStatus", {"action":"checkStatus"}, function(result) {
+				if (result['code'] == "4") {  // 已登录状态 
+					$("#login_form").css("display", "none");
+					alert_msg("提示", "您当前的状态是： 已登录");
+				} else {
+					$("#login_form").css("display", "");
+					
+					// 为登录按钮绑定事件
+					$("#submit").click(function() {
+						let username = $("#username").val();
+						let password = $("#password").val();
+						
+						let data = {
+							"action" : "login",
+							"username" : username,
+							"password" : password
+						};
+						$.post("../login", data, function(result){
+							if (result['code'] != "4") {
+								alert_msg("登录失败", "用户名或密码错误，请重新登录");
+							} else {
+								alert_msg("登录成功", "欢迎登录");
+								$("#login_form").css("display", "none");
+							}
+						});
+						return false;
+					});
+				}
+			});
+		});
+	</script>
+</html>
+
+<div class="ui modal" id="notice">
+  	<div class="header" id="notice_title"></div>
+  	<div class="content" id="notice_content"></div>
+  	<div class="actions">
+    	<div class="ui positive button">确定</div>
+    	<div class="ui cancel button">返回</div>
+  	</div>
+</div>
